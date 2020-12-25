@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Nalrin's Vidyascape Timers</title>
+</head>
+
+<body>
+
+<h3>Stat Timer</h3>
+<p style="overflow:hidden;white-space:nowrap;">Counts down and then restarts. Useful for knowing the exact second to drink stat boosts to get their full duration (60420).</p>
+<input type="button" value="start" onclick="StartStatTimer()"> Interval: <input id="statInterval" type="number" value="60420"> milliseconds
+<h1 id="statCount"></h1>
+
+<br><br>
+
+<h3>Warning Timer</h3>
+<p style="overflow:hidden;white-space:nowrap;">Plays a warning sound as it reaches 0. Useful for Dagannoth Prime respawns (70000) and Antifire Potions (360000).</p>
+<input type="button" value="start" onclick="StartRespawnTimer()"> Interval: <input id="respawnInterval" type="number" value="360000"> milliseconds
+<h1 id="respawnCount"></h1>
+</body>
+</html>
+
+<script>
+
+  var statTimer;
+  var statMS = 0;
+
+  function StartStatTimer() {
+    clearInterval(statTimer);
+    statMS = document.getElementById("statInterval").value;
+    statTimer = setInterval(StatTick, 10);
+  }
+
+  function StatTick() {
+    statMS -= 10;
+    document.getElementById("statCount").innerHTML = (statMS/1000).toFixed(0);
+    if(statMS <= 0) {
+      statMS += document.getElementById("statInterval").value;
+    }
+  }
+
+
+    var respawnTimer;
+    var respawnMS = 0;
+
+  function StartRespawnTimer() {
+    clearInterval(respawnTimer);
+    respawnMS = document.getElementById("respawnInterval").value;
+    respawnTimer = setInterval(RespawnTick, 10);
+  }
+
+  function RespawnTick() {
+    respawnMS -= 10;
+    document.getElementById("respawnCount").innerHTML = (respawnMS/1000).toFixed(0);
+    if(respawnMS <= 6000 && respawnMS >= 0 && respawnMS % 2500 == 1000) {
+      var myBeep = new Audio("https://files.catbox.moe/p8929b.mp3");
+      myBeep.play();
+    }
+  }
+
+</script>
